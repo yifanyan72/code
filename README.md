@@ -18,13 +18,9 @@ train_y = traindata.SalePrice
 full_data = pd.concat((train_X, testdata)).reset_index(drop=True).drop(["SalePrice"], axis=1)
 """dummy variables & fill miss"""
 for col in full_data.columns:
-#     print(col, "\t", end="")
-#     print(full_data[col].dtype, "\t", end="")
-#     print(full_data[col].dtype == object)
     if full_data[col].dtype == object:
         categories = full_data[col].unique()
         categories = [i for i in categories if i == i]
-#         print(categories)
         tmp_dict = {}
         idx = 1
         for cat in categories:
@@ -89,11 +85,9 @@ def  housepricePrediction_GB(traindata, testdata, cols):
     selected_test_data_x = testdata[cols[1:k]]
 
     
-    GB_model = GradientBoostingRegressor()
-  
-    GB_model.fit(selected_train_data_x, selected_train_data_y)
-
-    predicted_prices = []
+GB_model = GradientBoostingRegressor()
+GB_model.fit(selected_train_data_x, selected_train_data_y)
+ predicted_prices = []
     for test_infos in tqdm.tqdm(selected_test_data_x.values):
         try:
             predicted_price = GB_model.predict([test_infos])[0]
@@ -101,9 +95,9 @@ def  housepricePrediction_GB(traindata, testdata, cols):
         except:
             predicted_prices.append(0)
 
-    df_predicted_prices = pd.DataFrame(predicted_prices, columns=["SalePrice"])
+  df_predicted_prices = pd.DataFrame(predicted_prices, columns=["SalePrice"])
 
-    outputfilepath = r"GB_result_"+ str(k) +".csv"
+  outputfilepath = r"GB_result_"+ str(k) +".csv"
     f = open(outputfilepath, 'w', newline='')
     csv_writer = csv.writer(f)
     csv_writer.writerow(["Id", "SalePrice"])
@@ -112,7 +106,7 @@ def  housepricePrediction_GB(traindata, testdata, cols):
         csv_writer.writerow([ID, line["SalePrice"]])
         ID += 1
 
-    f.close()
+  f.close()
     
 """RandomForestRegressor"""
 from sklearn.ensemble import RandomForestRegressor
@@ -123,11 +117,11 @@ def  housepricePrediction_RF(traindata, testdata, cols):
     selected_test_data_x = testdata[cols[1:k]]
 
  
-    RF_model = RandomForestRegressor()
+  RF_model = RandomForestRegressor()
   
-    RF_model.fit(selected_train_data_x, selected_train_data_y)
+  RF_model.fit(selected_train_data_x, selected_train_data_y)
 
-    predicted_prices = []
+  predicted_prices = []
     for test_infos in tqdm.tqdm(selected_test_data_x.values):
         try:
             predicted_price = RF_model.predict([test_infos])[0]
@@ -135,10 +129,10 @@ def  housepricePrediction_RF(traindata, testdata, cols):
         except:
             predicted_prices.append(0)
 
-    df_predicted_prices = pd.DataFrame(predicted_prices, columns=["SalePrice"])
+  df_predicted_prices = pd.DataFrame(predicted_prices, columns=["SalePrice"])
 
-    outputfilepath = r"RF_result_"+ str(k) +".csv"
-    f = open(outputfilepath, 'w', newline='')
+  outputfilepath = r"RF_result_"+ str(k) +".csv"
+  f = open(outputfilepath, 'w', newline='')
     csv_writer = csv.writer(f)
     csv_writer.writerow(["Id", "SalePrice"])
     ID = 1461
@@ -146,7 +140,7 @@ def  housepricePrediction_RF(traindata, testdata, cols):
         csv_writer.writerow([ID, line["SalePrice"]])
         ID += 1
 
-    f.close()
+  f.close()
     
 """Lasso"""
 from sklearn.linear_model import Lasso
@@ -157,21 +151,20 @@ def  housepricePrediction_Lasso(traindata, testdata, cols):
     selected_test_data_x = testdata[cols[1:k]]
 
 
-    Lasso_model = Lasso()
-    
-    Lasso_model.fit(selected_train_data_x, selected_train_data_y)
+   Lasso_model = Lasso()
+   Lasso_model.fit(selected_train_data_x, selected_train_data_y)
 
-    predicted_prices = []
-    for test_infos in tqdm.tqdm(selected_test_data_x.values):
+   predicted_prices = []
+   for test_infos in tqdm.tqdm(selected_test_data_x.values):
         try:
             predicted_price = Lasso_model.predict([test_infos])[0]
             predicted_prices.append(predicted_price)
         except:
             predicted_prices.append(0)
 
-    df_predicted_prices = pd.DataFrame(predicted_prices, columns=["SalePrice"])
+  df_predicted_prices = pd.DataFrame(predicted_prices, columns=["SalePrice"])
 
-    outputfilepath = r"Lasso_result_"+ str(k) +".csv"
+  outputfilepath = r"Lasso_result_"+ str(k) +".csv"
     f = open(outputfilepath, 'w', newline='')
     csv_writer = csv.writer(f)
     csv_writer.writerow(["Id", "SalePrice"])
@@ -180,7 +173,7 @@ def  housepricePrediction_Lasso(traindata, testdata, cols):
         csv_writer.writerow([ID, line["SalePrice"]])
         ID += 1
 
-    f.close()
+  f.close()
     
 
 housepricePrediction_GB(traindata, testdata, cols)
